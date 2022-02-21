@@ -68,3 +68,29 @@ It's not possible to read (`/get`) or write (`/set`) this value.
 The minimal value is `0` and the maximum value is `255`.
 The unit of this value is `lqi`.
 
+Create a TS0601.js file into zigbee2mqtt folder.
+Copy and  paste the code below into the file:
+
+const fz = require('zigbee-herdsman-converters/converters/fromZigbee');
+const tz = require('zigbee-herdsman-converters/converters/toZigbee');
+const exposes = require('zigbee-herdsman-converters/lib/exposes');
+const reporting = require('zigbee-herdsman-converters/lib/reporting');
+const extend = require('zigbee-herdsman-converters/lib/extend');
+const e = exposes.presets;
+const ea = exposes.access;
+
+const definition = {
+    zigbeeModel: ['TS0601'], // The model ID from: Device with modelID 'lumi.sens' is not supported.
+    model: '_TZE200_bjawzodf', // Vendor model number, look on the device for a model number
+    vendor: 'Tuya', // Vendor of the device (only used for documentation and startup logging)
+    description: 'Tuya temperature & humidity sensor with display', // Description of the device, copy from vendor site. (only used for documentation and startup logging)
+    fromZigbee: [fz.tuya_temperature_humidity_sensor],
+    toZigbee: [], // Should be empty, unless device can be controlled (e.g. lights, switches).
+    exposes: [e.battery(), e.temperature(), e.humidity()], // Defines what this device exposes, used for e.g. Home Assistant discovery and in the frontend
+};
+
+module.exports = definition;
+
+
+then load this external to zigbee2mqtt by getting to settings/external converters and write down the name of file you created.
+in that case TS0601.js
